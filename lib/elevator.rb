@@ -3,10 +3,11 @@ class Elevator
   ELEV_MAX_PERSONS = 20
 
   attr_reader :buttons, :current_floor
+  attr_writer :current_floor
 
   def initialize(params)
     build_buttons(params[:floors]) # :floors is an array of Floor objects
-    @current_floor = rand(params[:floors].count) + 1 # elevator starts on a random floor
+    @current_floor = params[:current_floor]
   end
 
   # Returns floor object unless desired floor is current position of elevator
@@ -16,6 +17,11 @@ class Elevator
     else
       @buttons[floor_num]
     end
+  end
+
+  def move(direction)
+    current_floor += 1 if direction == 'up'
+    current floor -= 1 if direction == 'down'
   end
 
   private
