@@ -16,7 +16,7 @@ class TestElevator < Minitest::Test
                                      )])
   end
 
-  def test_existence_of_elevator
+  def test_initialization
     assert_instance_of Elevator, @elevator
   end
 

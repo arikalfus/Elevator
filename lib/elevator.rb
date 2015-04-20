@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Elevator
 
   ELEV_MAX_PERSONS = 20
@@ -25,8 +23,7 @@ class Elevator
   # Builds a hash of floor numbers to the corresponding Floor object
   def build_buttons(floors)
     @buttons = Hash.new
-    0...floors.count do |i|
-      binding.pry
+    (0...floors.count).each do |i|
       @buttons[i + 1] = floors[i]
     end
   end
