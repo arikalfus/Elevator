@@ -13,7 +13,8 @@ class TestElevator < Minitest::Test
                                      Floor.new(
                                               position: 2,
                                               buttons: [['up', 'down']]
-                                     )])
+                                     )],
+                            current_floor: 1)
   end
 
   def test_initialization

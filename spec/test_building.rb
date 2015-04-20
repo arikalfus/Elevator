@@ -8,9 +8,9 @@ class TestBuilding < Minitest::Test
 
   def setup
     @building = Building.new(
-                            elevators: [Elevator.new(floors: [Floor.new(position: 1, buttons: [['up', 'down']]), Floor.new(position: 2, buttons: [['up', 'down']])]),
+                            elevators: [Elevator.new(floors: [Floor.new(position: 1, buttons: [['up', 'down']]), Floor.new(position: 2, buttons: [['up', 'down']])], current_floor: 1),
                                         Elevator.new(floors: [Floor.new(position: 1, buttons: [['up', 'down']]), Floor.new(position: 2, buttons: [['up', 'down']])])],
-                            floors: [Floor.new(position: 1, buttons: [['up', 'down'], ['up', 'down']]), Floor.new(position: 2, buttons: [['up', 'down'], ['up', 'down']])])
+                            floors: [Floor.new(position: 1, buttons: [['up', 'down'], ['up', 'down']]), Floor.new(position: 2, buttons: [['up', 'down'], ['up', 'down']])], current_floor: 1)
   end
 
   def test_initialization
