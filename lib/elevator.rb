@@ -6,9 +6,9 @@ class Elevator
   attr_reader :buttons, :max_floors, :current_floor, :moving_direction, :passengers
 
   def initialize(params)
-    build_buttons(params[:floors]) # :floors is an array of Floor objects
+    build_buttons params[:floors] # :floors is a hash of Floor objects
     @moving_direction = :stopped
-    @current_floor = params[:current_floor]
+    @current_floor = ELEV_RESTING_FLOOR
     @passengers = Array.new
   end
 
@@ -49,8 +49,8 @@ class Elevator
   # Builds a hash of floor numbers to the corresponding Floor object
   def build_buttons(floors)
     @buttons = Hash.new
-    (0...floors.count).each do |i|
-      @buttons[i + 1] = floors[i]
+    floors.keys.each do |floor_num|
+      @buttons[floor_num] = floors[floor_num]
     end
 
     @max_floors = @buttons.keys.count

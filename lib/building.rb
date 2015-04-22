@@ -16,6 +16,8 @@ class Building
   end
 
   def start_turn
+    # get floor requests, new people requesting elevator?
+
     elevators.each do |elevator|
       elevator.start_turn
       cur_floor = elevator.current_floor
