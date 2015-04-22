@@ -1,5 +1,5 @@
 require_relative 'lib/elevator'
-require_relative 'lib/simulation'
+require_relative 'lib/simulate'
 
 
 class Sim

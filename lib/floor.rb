@@ -17,4 +17,8 @@ class Floor
     position <=> other.position
   end
 
+  def ==(other)
+    position == other.position
+  end
+
 end
