@@ -1,14 +1,23 @@
 class Elevator
 
   ELEV_MAX_PERSONS = 20
+  ELEV_RESTING_FLOOR = 1
 
-  attr_reader :buttons, :max_floors
-  attr_accessor :current_floor, :moving_direction
+  attr_reader :buttons, :max_floors, :current_floor, :moving_direction
 
   def initialize(params)
     build_buttons(params[:floors]) # :floors is an array of Floor objects
     @moving_direction = :stopped
     @current_floor = params[:current_floor]
+  end
+
+  def start_turn
+    if @moving_direction == :stopped
+      @moving_direction = :up
+      move
+    else
+      move
+    end
   end
 
   # Returns floor object unless desired floor is current position of elevator
@@ -20,15 +29,12 @@ class Elevator
     end
   end
 
-  def move(direction)
-    if direction == :up
+  def move
+    if moving_direction == :up
       move_up
-    elsif direction == :down
+    elsif moving_direction == :down
       move_down
-    elsif direction == :stopped
-      # do nothing
-    else
-      raise ArgumentError, "Direction #{direction} is not known."
+    # if moving_direction is :stopped, do nothing
     end
   end
 
@@ -46,25 +52,17 @@ class Elevator
 
   def move_up
     @moving_direction = :up
-    if current_floor + 1 >= max_floors
+    if current_floor + 1 == max_floors
       @moving_direction = :down
-      if current_floor + 1 > max_floors
-        move('down')
-      else
-        @current_floor += 1
-      end
+      @current_floor += 1
     end
   end
 
   def move_down
     @moving_direction = :down
-    if current_floor - 1 <= 1
-      @moving_direction = :up
-      if current_floor + 1 < 0
-        move('up')
-      else
-        @current_floor -= 1
-      end
+    if current_floor - 1 == ELEV_RESTING_FLOOR
+      @moving_direction = :stopped
+      @current_floor -= 1
     end
   end
 

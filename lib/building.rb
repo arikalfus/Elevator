@@ -15,4 +15,8 @@ class Building
     floors.count
   end
 
+  def start_turn
+
+  end
+
 end
