@@ -4,12 +4,14 @@ class Floor
 
   def initialize(params)
     @position = params[:position] # int position from 1 to n
-    @buttons = params[:buttons] # 2D array of up/down buttons
-    @persons = params[:persons] || Queue.new # queue of people waiting for an elevator
+    @persons = params[:persons] || Hash.new # hash of people waiting for an elevator, keys are up/down and ordered by position of desired floor from current floor
   end
 
-  def number_of_elevators
-    buttons.count
+  def start_turn(elevator)
+    direction = elevator.moving_direction
+    persons[direction].each do |person|
+      elevator.board_person person
+    end
   end
 
   # Floors are compared by their position number

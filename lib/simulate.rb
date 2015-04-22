@@ -36,11 +36,12 @@ class Simulate
   end
 
   def build_floors(floor_params)
-    floors = Array.new
+    floors = Hash.new
     people = build_people floor_params[:persons_params]
     floor_params[:floors].each do |floor_param|
       floor = Floor.new floor_param
-      floors.push floor
+      # Add key->value from integer floor num to Floor object for that floor
+      floors[floor.position] = floor
     end
 
     floors

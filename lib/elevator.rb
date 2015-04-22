@@ -3,12 +3,13 @@ class Elevator
   ELEV_MAX_PERSONS = 20
   ELEV_RESTING_FLOOR = 1
 
-  attr_reader :buttons, :max_floors, :current_floor, :moving_direction
+  attr_reader :buttons, :max_floors, :current_floor, :moving_direction, :passengers
 
   def initialize(params)
     build_buttons(params[:floors]) # :floors is an array of Floor objects
     @moving_direction = :stopped
     @current_floor = params[:current_floor]
+    @passengers = Array.new
   end
 
   def start_turn
@@ -36,6 +37,10 @@ class Elevator
       move_down
     # if moving_direction is :stopped, do nothing
     end
+  end
+
+  def board_person(person)
+
   end
 
   private
