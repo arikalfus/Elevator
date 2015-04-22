@@ -2,11 +2,12 @@ class Elevator
 
   ELEV_MAX_PERSONS = 20
 
-  attr_reader :buttons, :current_floor
-  attr_writer :current_floor
+  attr_reader :buttons, :max_floors
+  attr_accessor :current_floor, :moving_direction
 
   def initialize(params)
     build_buttons(params[:floors]) # :floors is an array of Floor objects
+    @moving_direction = :stopped
     @current_floor = params[:current_floor]
   end
 
@@ -20,8 +21,15 @@ class Elevator
   end
 
   def move(direction)
-    current_floor += 1 if direction == 'up'
-    current floor -= 1 if direction == 'down'
+    if direction == :up
+      move_up
+    elsif direction == :down
+      move_down
+    elsif direction == :stopped
+      # do nothing
+    else
+      raise ArgumentError, "Direction #{direction} is not known."
+    end
   end
 
   private
@@ -31,6 +39,32 @@ class Elevator
     @buttons = Hash.new
     (0...floors.count).each do |i|
       @buttons[i + 1] = floors[i]
+    end
+
+    @max_floors = @buttons.keys.count
+  end
+
+  def move_up
+    @moving_direction = :up
+    if current_floor + 1 >= max_floors
+      @moving_direction = :down
+      if current_floor + 1 > max_floors
+        move('down')
+      else
+        @current_floor += 1
+      end
+    end
+  end
+
+  def move_down
+    @moving_direction = :down
+    if current_floor - 1 <= 1
+      @moving_direction = :up
+      if current_floor + 1 < 0
+        move('up')
+      else
+        @current_floor -= 1
+      end
     end
   end
 
