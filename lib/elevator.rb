@@ -39,8 +39,9 @@ class Elevator
     end
   end
 
+  # Passengers are inserted into passengers array ordered by what floor they want to get off at
   def board_person(person)
-
+    passengers.push person
   end
 
   private
