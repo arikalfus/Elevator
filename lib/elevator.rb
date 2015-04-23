@@ -20,8 +20,10 @@ class Elevator
     if @moving_direction == :stopped
       @moving_direction = :up
       move
+      board
     else
       move
+      board
     end
   end
 
@@ -42,6 +44,19 @@ class Elevator
       move_down
     # if moving_direction is :stopped, do nothing
     end
+  end
+
+  def board
+    boarded = 0
+    waiting_line = current_floor.persons[moving_direction]
+    waiting_line.each do |person|
+      unless passengers.count == ELEV_MAX_PERSONS
+        passengers.push person
+        boarded += 1
+      end
+    end
+
+    boarded
   end
 
   # Passengers are inserted into passengers array ordered by what floor they want to get off at

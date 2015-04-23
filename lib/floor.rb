@@ -7,9 +7,11 @@ class Floor
     @persons = params[:persons] || Hash.new # hash of people waiting for an elevator, keys are up/down and values are arrays of Persons ordered by position of desired floor from current floor
   end
 
+  #
   def start_turn(elevator)
+
     direction = elevator.moving_direction
-    num_boarded = board_elevator elevator, direction
+    num_boarded = board_elevator elevator
     update_waiting_line num_boarded, direction
 
   end
@@ -18,11 +20,9 @@ class Floor
 
     current_position = position <=> person.desired_floor
     if current_position > 1 # person is above their desired floor
-      waiting_line = persons[:down]
-      waiting_line.push person
+      persons[:down].push person
     elsif current_position < 1 # person is below their desired floor
-      waiting_line = persons[:up]
-      waiting_line.push person
+      persons[:up].push person
     end
 
   end
@@ -42,16 +42,8 @@ class Floor
 
   private
 
-  def board_elevator(elevator, direction)
-
-    num_boarded = 0
-    persons[direction].each do |person|
-      elevator.board_person person
-      num_boarded += 1
-
-    end
-
-    num_boarded
+  def board_elevator(elevator)
+    elevator.board
   end
 
   def update_waiting_line(num_boarded, direction)
