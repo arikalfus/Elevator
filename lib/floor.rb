@@ -27,6 +27,10 @@ class Floor
 
   end
 
+  def floor_num
+    position
+  end
+
   # Floors are compared by their position number
   def <=>(other)
     position <=> other.position
