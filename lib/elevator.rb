@@ -1,9 +1,12 @@
+require 'pry-byebug'
+
 class Elevator
 
   ELEV_MAX_PERSONS = 20
   ELEV_RESTING_FLOOR = 1
 
-  attr_reader :buttons, :max_floors, :current_floor, :moving_direction, :passengers
+  attr_reader :buttons, :max_floors, :current_floor, :passengers
+  attr_accessor :moving_direction
 
   def initialize(params)
     build_buttons params[:floors] # :floors is a hash of Floor objects
@@ -57,19 +60,17 @@ class Elevator
   end
 
   def move_up
-    @moving_direction = :up
     if current_floor + 1 == max_floors
       @moving_direction = :down
-      @current_floor += 1
     end
+    @current_floor += 1
   end
 
   def move_down
-    @moving_direction = :down
     if current_floor - 1 == ELEV_RESTING_FLOOR
       @moving_direction = :stopped
-      @current_floor -= 1
     end
+    @current_floor -= 1
   end
 
 end

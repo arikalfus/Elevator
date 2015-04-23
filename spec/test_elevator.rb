@@ -17,6 +17,7 @@ class TestElevator < Minitest::Test
   end
 
   def test_go_to_floor
+
     current_floor = @elevator.current_floor
     if current_floor == 2
       floor = @elevator.go_to_floor 2
@@ -36,6 +37,21 @@ class TestElevator < Minitest::Test
     else
       raise Exception, "Current floor is an invalid number: #{current_floor}"
     end
+
+  end
+
+  def test_move
+    cur_pos = @elevator.current_floor
+    @elevator.moving_direction = :stopped
+    @elevator.move # when stopped, elevator should do nothing
+    assert_equal cur_pos, @elevator.current_floor
+
+    new_pos = cur_pos + 1
+    @elevator.moving_direction = :up
+    assert_equal :up, @elevator.moving_direction
+    @elevator.move
+    assert_equal new_pos, @elevator.current_floor
+
 
   end
 
