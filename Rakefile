@@ -1,4 +1,3 @@
-require_relative 'sim'
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|

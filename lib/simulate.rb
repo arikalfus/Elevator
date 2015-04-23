@@ -11,8 +11,6 @@ class Simulate
   def initialize(params)
     @max_turns = params[:turns]
     @clock_time = 0
-
-    build_simulation(params)
   end
 
   def self.run(num_turns)
@@ -26,10 +24,12 @@ class Simulate
 
   def clock_tick
     if clock_time == max_turns
-      puts "\n", 'Simulation complete.'
+      puts "\n\n", 'Simulation complete.'
     else
       @clock_time += 1
-      run_sim
+      building.start_turn
+      sleep 1
+      clock_tick
     end
 
   end
@@ -59,7 +59,7 @@ class Simulate
   end
 
   def self.build_manual_construct
-
+    # TODO: fill this out
   end
 
   def self.build_simulation(params)
