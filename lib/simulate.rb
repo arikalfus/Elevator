@@ -1,7 +1,7 @@
-require 'require_all'
-require 'pry-byebug'
-
-require_rel '*'
+require_relative 'building'
+require_relative 'elevator'
+require_relative 'floor'
+require_relative 'person'
 
 
 class Simulate

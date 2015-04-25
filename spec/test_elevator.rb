@@ -1,15 +1,12 @@
 require_relative 'spec_helper'
 
-require_rel '../lib/elevator', '../lib/floor'
+require_relative '../lib/elevator'
+require_relative '../lib/floor'
 
 class TestElevator < Minitest::Test
 
   def setup
     @elevator = Elevator.new floors: {1 => Floor.new(position: 1), 2=> Floor.new(position: 2), 3 => Floor.new(position: 3)}
-  end
-
-  def test_initialization
-    assert_instance_of Elevator, @elevator
   end
 
   def test_current_floor

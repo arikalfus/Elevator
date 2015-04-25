@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Elevator
 
   ELEV_MAX_PERSONS = 20

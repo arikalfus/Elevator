@@ -1,6 +1,8 @@
 require_relative 'spec_helper'
 
-require_rel '../lib/building', '../lib/elevator', '../lib/floor'
+require_relative '../lib/building'
+require_relative '../lib/elevator'
+require_relative '../lib/floor'
 
 class TestBuilding < Minitest::Test
 
@@ -10,10 +12,6 @@ class TestBuilding < Minitest::Test
                                         Elevator.new(floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)}),
                                         Elevator.new(floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)})],
                             floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)})
-  end
-
-  def test_initialization
-    assert_instance_of Building, @building
   end
 
   def test_counts
