@@ -21,13 +21,8 @@ class Floor
     end
   end
 
-  # Remove Persons from appropriate queue after boarding an Elevator
-  def update_waiting_line(num_boarded, direction)
-
-    waiting_line = persons[direction]
-    waiting_line.slice! 0...num_boarded
-    persons[direction] = waiting_line
-
+  def board_elevator(num_boarded, direction)
+    update_waiting_line num_boarded, direction
   end
 
   # Floors are compared by their position number
@@ -39,5 +34,15 @@ class Floor
     position == other.position
   end
 
+  private
+
+  # Remove Persons from appropriate queue after boarding an Elevator
+  def update_waiting_line(num_boarded, direction)
+
+    waiting_line = persons[direction]
+    waiting_line.slice! 0...num_boarded
+    persons[direction] = waiting_line
+
+  end
 
 end

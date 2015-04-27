@@ -49,8 +49,7 @@ class TestFloor < Minitest::Test
     person2 = Person.new({desired_floor: 1})
     @floor.add_person person1
     @floor.add_person person2
-    num_boarded = @elevator.board @floor
-    @floor.update_waiting_line num_boarded, @elevator.moving_direction
+    @elevator.board @floor
     assert_equal [person1, person2], @elevator.passengers
     people_on_floor = 0
     @floor.persons.values.each{ |array| array.each { |_| people_on_floor += 1 }
