@@ -66,8 +66,7 @@ class Simulate
   def self.build_manual_construct
     # TODO: fill this out
     puts "\n", 'Manual construction is in development and is unavailable at this time! Please restart the application
- and
-select the "Automated" option.'
+ and select the "Automated" option.'
   end
 
   def self.build_simulation(params)
@@ -76,7 +75,9 @@ select the "Automated" option.'
     elevators = build_elevators({building: self, num: params[:num_of_elevators]})
     @elevators = elevators
 
-    @building = Building.new({floors: floors, elevators: elevators})
+    @building = Building.new
+    @building.build_floors floors: @floors
+    @building.build_elevators elevators: @elevators
   end
 
   def self.build_floors(floor_params)

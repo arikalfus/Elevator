@@ -20,25 +20,18 @@ class Elevator
 
   def start_turn
 
-    if @moving_direction == :stopped
-      @moving_direction = :up
-      move
-      board building.floor[current_floor]
-    else
-      move
-      board building.floor[current_floor]
-    end
+    move
+    board building.floor[current_floor]
 
   end
 
   # Returns floor object unless desired floor is current position of elevator
+  #
+  # Only used for testing purposes -- no need in final design
+  # TODO: Remove this method at the end?
   def go_to_floor(floor_num)
 
-    if floor_num == current_floor
-      nil
-    else
-      building.floors[floor_num]
-    end
+    @current_floor = floor_num if floor_num >= ELEV_RESTING_FLOOR and floor_num <= max_floors
 
   end
 
@@ -49,7 +42,10 @@ class Elevator
       move_up
     elsif moving_direction == :down
       move_down
-    # if moving_direction is :stopped, do nothing
+    elsif moving_direction == :stopped
+      begin_moving
+    else
+      raise Exception, 'Moving direction is set to an invalid symbol:', moving_direction
     end
 
   end
@@ -80,20 +76,34 @@ class Elevator
 
   def move_up
 
-    if current_floor + 1 == max_floors
+    @moving_direction = :down if current_floor + 1 == max_floors
+
+    if current_floor == max_floors
       @moving_direction = :down
+      move
+    else
+      @current_floor += 1
     end
-    @current_floor += 1
 
   end
 
   def move_down
 
-    if current_floor - 1 == ELEV_RESTING_FLOOR
-      @moving_direction = :stopped
-    end
-    @current_floor -= 1
+    @moving_direction = :stopped if current_floor - 1 == ELEV_RESTING_FLOOR
 
+    if current_floor == ELEV_RESTING_FLOOR
+      @moving_direction = :up
+      move
+    else
+      @current_floor -= 1
+    end
+
+  end
+
+  # Method should only be called if elevator is at ELEV_RESTING_FLOOR
+  def begin_moving
+    @moving_direction = :up
+    move
   end
 
 end

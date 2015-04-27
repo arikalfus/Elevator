@@ -10,15 +10,6 @@ class Floor
     @building = params[:building]
   end
 
-  # # Board passengers onto an elevator and update queue
-  # def board_elevator(elevator)
-  #
-  #   direction = elevator.moving_direction
-  #   num_boarded = elevator.board self
-  #   update_waiting_line num_boarded, direction
-  #
-  # end
-
   # add Person object to this floor in the correct queue
   def add_person(person)
     current_position = position <=> person.desired_floor

@@ -4,8 +4,6 @@ require_relative '../lib/floor'
 require_relative '../lib/building'
 require_relative '../lib/elevator'
 
-require 'pry-byebug'
-
 class TestFloor < Minitest::Test
 
   def setup
