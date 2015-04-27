@@ -58,6 +58,7 @@ class Elevator
 
     boarded = 0
     waiting_line = floor.persons[moving_direction]
+
     waiting_line.each do |person|
       unless passengers.count == ELEV_MAX_PERSONS
         passengers.push person

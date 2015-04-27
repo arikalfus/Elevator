@@ -34,7 +34,7 @@ class Floor
   def update_waiting_line(num_boarded, direction)
 
     waiting_line = persons[direction]
-    waiting_line.slice num_boarded
+    waiting_line.slice! 0...num_boarded
     persons[direction] = waiting_line
 
   end

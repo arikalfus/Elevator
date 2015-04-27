@@ -4,6 +4,8 @@ require_relative '../lib/floor'
 require_relative '../lib/building'
 require_relative '../lib/elevator'
 
+require 'pry-byebug'
+
 class TestFloor < Minitest::Test
 
   def setup
@@ -53,7 +55,9 @@ class TestFloor < Minitest::Test
     @floor.update_waiting_line num_boarded, @elevator.moving_direction
     assert_equal [person1, person2], @elevator.passengers
     people_on_floor = 0
-    assert_equal 0, @floor.persons.values.each{ |array| array.each { |_| people_on_floor += 1 } }
+    @floor.persons.values.each{ |array| array.each { |_| people_on_floor += 1 }
+
+    assert_equal 0, people_on_floor}
   end
 
 end
