@@ -2,21 +2,22 @@ require 'pry-byebug'
 
 class Floor
 
-  attr_reader :position, :persons
+  attr_reader :position, :persons, :building
 
   def initialize(params)
     @position = params[:position] # int position from 1 to n
     @persons = params[:persons] || { up: [], down: [] } # hash of people waiting for an elevator, keys are up/down and values are arrays of Persons
+    @building = params[:building]
   end
 
-  # Board passengers onto an elevator and update queue
-  def start_turn(elevator)
-
-    direction = elevator.moving_direction
-    num_boarded = board_elevator elevator
-    update_waiting_line num_boarded, direction
-
-  end
+  # # Board passengers onto an elevator and update queue
+  # def board_elevator(elevator)
+  #
+  #   direction = elevator.moving_direction
+  #   num_boarded = elevator.board self
+  #   update_waiting_line num_boarded, direction
+  #
+  # end
 
   # add Person object to this floor in the correct queue
   def add_person(person)
@@ -29,8 +30,13 @@ class Floor
     end
   end
 
-  def floor_num
-    position
+  # Remove Persons from appropriate queue after boarding an Elevator
+  def update_waiting_line(num_boarded, direction)
+
+    waiting_line = persons[direction]
+    waiting_line.slice num_boarded
+    persons[direction] = waiting_line
+
   end
 
   # Floors are compared by their position number
@@ -42,19 +48,5 @@ class Floor
     position == other.position
   end
 
-  private
-
-  def board_elevator(elevator)
-    elevator.board # current floor should be recorded in elevator, no need to pass this Floor to Elevator
-  end
-
-  # Remove Persons from appropriate queue after boarding an Elevator
-  def update_waiting_line(num_boarded, direction)
-
-    waiting_line = persons[direction]
-    waiting_line.slice num_boarded
-    persons[direction] = waiting_line
-
-  end
 
 end

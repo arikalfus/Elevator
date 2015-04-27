@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-require_rel '../lib/person'
+require_relative '../lib/person'
 
 class TestPerson < Minitest::Test
 

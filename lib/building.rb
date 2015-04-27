@@ -2,35 +2,47 @@ class Building
 
   attr_reader :elevators, :floors
 
-  def initialize(params)
-    @elevators = params[:elevators] # elevator objects in the building
-    @floors = params[:floors] # hash of floor objects in the building
+  def initialize
+    @floors = Hash.new
+    @elevators = Array.new
+  end
 
+  def build_floors(params)
+    @floors = params[:floors]
+  end
+
+  def build_elevators(params)
+    @elevators = params[:elevators]
   end
 
   def number_of_elevators
-    elevators.count
+    elevators.nil? ? raise(Exception,'No elevators exist! You should run the Building#build_elevators method.') :
+        elevators.count
   end
 
   def number_of_floors
-    floors.keys.count
+    floors.nil? ? raise(Exception, 'No floors exist! You should run the Building#build_floors method.') : floors.keys
+                                                                                                            .count
   end
 
   def start_turn
-    # get floor requests, new people requesting elevator?
+    # TODO: get floor requests, new people requesting elevator?
 
     elevators.each do |elevator|
-      elevator.start_turn
-      cur_floor = elevator.current_floor
-      floor = floors[cur_floor]
-      floor.start_turn(elevator)
+      num_boarded = elevator.start_turn
+      floor.update_waiting_line num_boarded elevator.moving_direction
     end
 
-    print_state
+    to_s
   end
 
-  def print_state
+  # Returns floor object corresponding to floor number
+  def floor(num)
+    floors[num]
+  end
 
+  def to_s
+    #TODO: This
   end
 
 end

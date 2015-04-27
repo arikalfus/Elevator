@@ -7,11 +7,13 @@ require_relative '../lib/floor'
 class TestBuilding < Minitest::Test
 
   def setup
-    @building = Building.new(
-                            elevators: [Elevator.new(floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)}),
-                                        Elevator.new(floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)}),
-                                        Elevator.new(floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)})],
-                            floors: { 1 => Floor.new(position: 1), 2 => Floor.new(position: 2), 3 => Floor.new(position: 3)})
+    @building = Building.new
+    @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building), 2 => Floor.new(position: 2, building: @building),
+                                     3 => Floor.new(position: 3, building: @building)})
+    @building.build_elevators(elevators: [Elevator.new(building: @building),
+                                          Elevator.new(building: @building),
+                                          Elevator.new(building: @building)])
+
   end
 
   def test_counts

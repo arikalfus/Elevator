@@ -6,8 +6,11 @@ require_relative 'person'
 
 class Simulate
 
-  attr_reader :building, :clock_time, :max_turns
+  attr_reader :building, :clock_time, :max_turns, :floors, :elevators
 
+  #
+  # See #build_simulation for initialization of other instance variables
+  #
   def initialize(params)
     @max_turns = params[:turns]
     @clock_time = 0
@@ -45,7 +48,8 @@ class Simulate
     elsif construct_method.downcase == 'm'
       build_manual_construct
     else
-      puts "\n", 'You did not enter a valid parameter (A/M). Press ctrl-C if you would like to terminate the program.'
+      puts "\n", 'You did not enter a valid parameter (A/M). Press ctrl-C if you would like to terminate the program
+.', "\n"
       construct_object_params
     end
   end
@@ -55,16 +59,22 @@ class Simulate
     build_simulation({floor_params: [{position: 1, person_params: [{desired_floor: 2}]},
                                      {position: 2},
                                      {position: 3}],
-                      num_of_elevators: 1})
+                      num_of_elevators: 1,
+                      building: self})
   end
 
   def self.build_manual_construct
     # TODO: fill this out
+    puts "\n", 'Manual construction is in development and is unavailable at this time! Please restart the application
+ and
+select the "Automated" option.'
   end
 
   def self.build_simulation(params)
     floors = build_floors params[:floor_params]
-    elevators = build_elevators({floors: floors, num: params[:num_of_elevators]})
+    @floors = floors
+    elevators = build_elevators({building: self, num: params[:num_of_elevators]})
+    @elevators = elevators
 
     @building = Building.new({floors: floors, elevators: elevators})
   end
@@ -84,7 +94,7 @@ class Simulate
   def self.build_elevators(elevator_params)
     elevators = Array.new
     (0...elevator_params[:num]).each do |i|
-      elevator = Elevator.new elevator_params[:floors]
+      elevator = Elevator.new elevator_params[:building]
       elevators.push elevator
     end
   end
