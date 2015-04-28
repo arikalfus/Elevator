@@ -20,7 +20,6 @@ class Elevator
 
   def start_turn
 
-    board building.floors[current_floor]
     move
     # TODO: exit the elevator
 
@@ -54,18 +53,19 @@ class Elevator
   def board(floor)
 
     boarded = 0
-    waiting_line = floor.persons[moving_direction]
 
-    unless waiting_line.empty?
+    unless moving_direction == :stopped
+      waiting_line = floor.persons[moving_direction]
+
       waiting_line.each do |person|
         unless passengers.count == ELEV_MAX_PERSONS
           passengers.push person
           boarded += 1
         end
       end
-    end
 
-    floor.board_elevator boarded, moving_direction
+      floor.board_elevator boarded, moving_direction
+    end
 
   end
 
@@ -85,6 +85,7 @@ class Elevator
       @moving_direction = :down
       move
     else
+      board building.floors[current_floor]
       @current_floor += 1
     end
 
@@ -98,6 +99,7 @@ class Elevator
       @moving_direction = :up
       move
     else
+      board building.floors[current_floor]
       @current_floor -= 1
     end
 
