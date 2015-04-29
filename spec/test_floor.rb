@@ -50,7 +50,7 @@ class TestFloor < Minitest::Test
     @floor.add_person person1
     @floor.add_person person2
     @elevator.board @floor
-    assert_equal [person1, person2], @elevator.passengers
+    assert_equal [person1, person2], @elevator.get_passengers
     people_on_floor = 0
     @floor.persons.values.each{ |array| array.each { |_| people_on_floor += 1 }
 

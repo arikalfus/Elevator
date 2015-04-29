@@ -73,7 +73,7 @@ class TestElevator < Minitest::Test
     floor.add_person Person.new(desired_floor: 2)
 
     @elevator.start_turn
-    assert_equal 1, @elevator.passengers.count
+    assert_equal 1, @elevator.count
   end
 
 end

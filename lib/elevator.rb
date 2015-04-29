@@ -14,21 +14,21 @@ class Elevator
     @max_floors = building.number_of_floors
     @moving_direction = :stopped
     @current_floor = ELEV_RESTING_FLOOR
-    @passengers = Array.new
+    build_passenger_hash
 
   end
 
   def start_turn
 
     move
-    # TODO: exit the elevator
+    # TODO: passengers exit the elevator
 
   end
 
   # Returns floor object unless desired floor is current position of elevator
   #
   # Only used for testing purposes -- no need in final design
-  # TODO: Remove this method at the end?
+  # TODO: Remove this method at the end
   def go_to_floor(floor_num)
 
     @current_floor = floor_num if floor_num >= ELEV_RESTING_FLOOR and floor_num <= max_floors
@@ -50,6 +50,7 @@ class Elevator
 
   end
 
+  # Passengers from floor are boarded onto elevator
   def board(floor)
 
     boarded = 0
@@ -59,23 +60,40 @@ class Elevator
 
       waiting_line.each do |person|
         unless passengers.count == ELEV_MAX_PERSONS
-          passengers.push person
+          board_person person
           boarded += 1
         end
       end
 
-      floor.board_elevator boarded, moving_direction
+      floor.board_elevator boarded, moving_direction # update floor
     end
 
   end
 
   # Passengers are inserted into passengers array ordered by what floor they want to get off at
   def board_person(person)
-    passengers.push person
-    # TODO: complete this method
+    @passengers[person.desired_floor].push person
+  end
+
+  # Returns the number of passengers onboard the elevator.
+  def count
+    num = 0
+    passengers.values.each {|array| array.each {|_| num += 1 } }
+    num
+  end
+
+  # Returns passengers as an array
+  def get_passengers
+    passengers.values.flatten
   end
 
   private
+
+  # Passengers are stored in a hash where each key is a floor number corresponding to an array of passengers desiring that floor
+  def build_passenger_hash
+    @passengers = Hash.new
+    (1..@max_floors).each { |i| @passengers[i] = Array.new }
+  end
 
   def move_up
 
