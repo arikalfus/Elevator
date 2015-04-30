@@ -5,7 +5,7 @@ class Elevator
   ELEV_MAX_PERSONS = 20
   ELEV_RESTING_FLOOR = 1
 
-  attr_reader :building, :max_floors, :current_floor, :passengers
+  attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count
   attr_accessor :moving_direction
 
   def initialize(params)
@@ -29,11 +29,11 @@ class Elevator
   def move
 
     if moving_direction == :up
-      unless read_passenger_desires
+      if read_passenger_desires
+        move_up
+      else
         @moving_direction = :down
         move
-      else
-        move_up
       end
 
     elsif moving_direction == :down
@@ -57,7 +57,7 @@ class Elevator
       waiting_line = floor.get_waiting moving_direction
 
       waiting_line.each do |person|
-        unless passengers.count == ELEV_MAX_PERSONS
+        unless passenger_count == ELEV_MAX_PERSONS
           board_person person
           boarded += 1
         end
@@ -70,6 +70,7 @@ class Elevator
 
   def exit_elevator(floor)
     persons_exiting = passengers[current_floor]
+    @passenger_count -= persons_exiting.count
     @passengers[current_floor].clear
     floor.arrive persons_exiting
   end
@@ -77,13 +78,12 @@ class Elevator
   # Passengers are inserted into passengers array ordered by what floor they want to get off at
   def board_person(person)
     @passengers[person.desired_floor].push person
+    @passenger_count += 1
   end
 
-  # Returns the number of passengers onboard the elevator.
+  # Returns the number of passengers on board the elevator.
   def count_passengers
-    num = 0
-    passengers.values.each {|array| array.each {|_| num += 1 } }
-    num
+    passenger_count
   end
 
   # Returns passengers as an array
@@ -97,6 +97,7 @@ class Elevator
   def build_passenger_hash
     @passengers = Hash.new
     (1..@max_floors).each { |i| @passengers[i] = Array.new }
+    @passenger_count = 0
   end
 
   def move_up

@@ -56,14 +56,13 @@ class TestElevator < Minitest::Test
     (@elevator.current_floor..@elevator.max_floors).each { |_| @elevator.move }
     assert_equal 3, @elevator.current_floor
     @elevator.move
-    assert_equal 2, @elevator.current_floor
     assert_equal :down, @elevator.moving_direction
+    assert_equal 2, @elevator.current_floor
   end
 
   def test_start_turn
     assert_equal :stopped, @elevator.moving_direction
-    floor = @elevator.building.floor @elevator.current_floor
-    floor.add_person Person.new(desired_floor: 2)
+    @building.floor(@elevator.current_floor).add_person Person.new(desired_floor: 3)
 
     @elevator.start_turn
     assert_equal 1, @elevator.count_passengers

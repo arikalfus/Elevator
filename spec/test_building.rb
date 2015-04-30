@@ -23,7 +23,7 @@ class TestBuilding < Minitest::Test
 
   def test_floor
     floor = @building.floor 1
-    assert_equal floor, Floor.new(position: 1, building: @building)
+    assert_equal floor, Floor.new(position: 1, building: @building) # floors are compared by position number
   end
 
   def test_log_pickup_request
@@ -47,7 +47,7 @@ class TestBuilding < Minitest::Test
     assert_equal false, requests2
 
     requests3 = @building.check_pickup_requests 5
-    assert_equal false, request3
+    assert_equal false, requests3
   end
 
 end

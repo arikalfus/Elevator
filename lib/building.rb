@@ -3,7 +3,6 @@ require 'set'
 class Building
 
   attr_reader :elevators, :floors, :pickup_requests
-  attr_accessor :floors # only for testing TODO: remove when done
 
   def initialize
     @floors = Hash.new
@@ -20,13 +19,11 @@ class Building
   end
 
   def number_of_elevators
-    elevators.nil? ? raise(Exception,'No elevators exist! You should run the Building#build_elevators method.') :
-        elevators.count
+    elevators.nil? ? raise(Exception,'No elevators exist! You should run the #build_elevators method.') : elevators.count
   end
 
   def number_of_floors
-    floors.nil? ? raise(Exception, 'No floors exist! You should run the Building#build_floors method.') : floors.keys
-                                                                                                            .count
+    floors.nil? ? raise(Exception, 'No floors exist! You should run the #build_floors method.') : floors.keys.count
   end
 
   def start_turn
