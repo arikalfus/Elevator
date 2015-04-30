@@ -61,7 +61,7 @@ class TestFloor < Minitest::Test
     floor1.arrive([Person.new(desired_floor: 2), Person.new(desired_floor: 2)])
     assert_equal 2, floor1.count_line
 
-    @elevator.moving_direction = :up
+    @elevator.moving_direction = :stopped
     @elevator.move
     assert_equal 0, floor1.count_line
     assert_equal 2, @elevator.count_passengers

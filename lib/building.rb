@@ -1,10 +1,14 @@
+require 'set'
+
 class Building
 
-  attr_reader :elevators, :floors
+  attr_reader :elevators, :floors, :pickup_requests
+  attr_accessor :floors # only for testing TODO: remove when done
 
   def initialize
     @floors = Hash.new
     @elevators = Array.new
+    @pickup_requests = Set.new
   end
 
   def build_floors(params)
@@ -26,19 +30,41 @@ class Building
   end
 
   def start_turn
-    # TODO: get floor requests, new people requesting elevator?
+    elevators.each { |elevator| elevator.start_turn }
 
-    elevators.each do |elevator|
-      num_boarded = elevator.start_turn
-      floor.update_waiting_line num_boarded elevator.moving_direction
-    end
-
+    sleep 1
     to_s
   end
 
   # Returns floor object corresponding to floor number
   def floor(num)
     floors[num]
+  end
+
+  # Adds a pickup request to the Set of requests
+  def log_pickup_request(floor_num)
+    @pickup_requests.add floor_num
+  end
+
+  # Returns an array of all current pickup requests
+  def get_all_pickup_requests
+    pickup_requests.to_a
+  end
+
+  # Returns a boolean referring to whether there are pickup requests ABOVE the floor_num
+  def check_pickup_requests(floor_num)
+
+    nums = Array.new
+    total_floors = floors.keys.count
+
+    (floor_num..total_floors).each do |floor|
+      if floor > floor_num
+        return true if pickup_requests.include? floor
+      end
+    end
+
+    false
+
   end
 
   def to_s

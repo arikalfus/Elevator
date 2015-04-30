@@ -19,6 +19,8 @@ class Floor
       persons[:up].push person
     # else, person is on their desired floor, person 'disappears'
     end
+
+    building.log_pickup_request position
   end
 
   # Add an array of persons to the floor

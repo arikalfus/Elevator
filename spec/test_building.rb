@@ -21,4 +21,21 @@ class TestBuilding < Minitest::Test
     assert_equal 3, @building.number_of_floors
   end
 
+  def test_floor
+    floor = @building.floor 1
+    assert_equal floor, Floor.new(position: 1, building: @building)
+  end
+
+  def test_log_pickup_request
+    assert_equal 0, @building.get_all_pickup_requests.count
+    @building.log_pickup_request 2
+    assert_equal 1, @building.get_all_pickup_requests.count
+  end
+
+  def test_get_all_pickup_requests
+    assert_equal [], @building.get_all_pickup_requests
+    @building.log_pickup_request 3
+    assert_equal [3], @building.get_all_pickup_requests
+  end
+
 end

@@ -39,6 +39,10 @@ class TestElevator < Minitest::Test
     orig_pos = @elevator.current_floor
     @elevator.moving_direction = :up
     assert_equal :up, @elevator.moving_direction
+    floor = Floor.new(position: 2, building: @building)
+    floor.add_person Person.new(desired_floor: 1)
+    assert_equal 1, floor.count_line
+    @building.floors[2] = floor
     @elevator.move
     assert_equal orig_pos + 1, @elevator.current_floor
 
@@ -48,13 +52,13 @@ class TestElevator < Minitest::Test
     assert_equal orig_pos, @elevator.current_floor
 
     # Test unable to go below bottom floor
-    # elevator moves up if move command is sent when on bottom floor
+    # elevator doesn't move if command is sent when on bottom floor
     @elevator.go_to_floor 1
     @elevator.moving_direction = :down
     assert_equal 1, @elevator.current_floor
     @elevator.move
-    assert_equal 2, @elevator.current_floor
-    assert_equal :up, @elevator.moving_direction
+    assert_equal 1, @elevator.current_floor
+    assert_equal :stopped, @elevator.moving_direction
 
     # Test unable to go above top floor
     # elevator moves down if move command is sent when on top floor

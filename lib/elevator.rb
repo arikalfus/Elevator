@@ -45,10 +45,13 @@ class Elevator
       else
         move_up
       end
+
     elsif moving_direction == :down
       move_down
+
     elsif moving_direction == :stopped
       begin_moving
+
     else
       raise Exception, 'Moving direction is set to an invalid symbol:', moving_direction
     end
@@ -122,12 +125,10 @@ class Elevator
 
   def move_down
 
-    @moving_direction = :stopped if current_floor - 1 == ELEV_RESTING_FLOOR
+    @moving_direction = :stopped if current_floor - 1 == ELEV_RESTING_FLOOR or current_floor == ELEV_RESTING_FLOOR
 
-    if current_floor == ELEV_RESTING_FLOOR
-      @moving_direction = :up
-      move
-    else
+    # A call to #move_down when on ELEV_RESTING_FLOOR does nothing
+    unless current_floor == ELEV_RESTING_FLOOR
       board building.floor(current_floor)
       @current_floor -= 1
     end
@@ -143,8 +144,15 @@ class Elevator
 
   # Checks if any passengers want to get off on a higher floor
   def read_passenger_desires
-    (current_floor..max_floors).each { |floor_num| check_desires floor_num }
-    false # else, no more passengers to unload
+
+    (current_floor..max_floors).each do |floor_num|
+      desire = check_desires floor_num
+      return desire if desire # if there is a passenger wishing to go up, break and return
+    end
+
+    # After checking if any passengers need to go up, ask building if anyone above current floor is waiting for an elevator
+    building.check_pickup_requests current_floor
+
   end
 
   # Checks if any passengers want to get off at floor floor_num
