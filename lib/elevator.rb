@@ -83,11 +83,6 @@ class Elevator
     @passenger_count += 1
   end
 
-  # Returns the number of passengers on board the elevator.
-  def count_passengers
-    passenger_count
-  end
-
   # Returns passengers as an array
   def get_passengers
     passengers.values.flatten

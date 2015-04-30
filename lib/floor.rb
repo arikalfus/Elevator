@@ -58,9 +58,12 @@ class Floor
 
   # Returns number of people waiting for an elevator
   def count_line
-    num = 0
-    waiting_line.values.each { |array| array.each { |_| num += 1} }
-    num
+    waiting_count
+  end
+
+  # Returns number of inhabitants on floor
+  def inhabitant_count
+    inhabitants.count
   end
 
   # Floors are compared by their position number

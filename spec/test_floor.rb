@@ -56,6 +56,13 @@ class TestFloor < Minitest::Test
     assert_equal 0, people_on_floor
   end
 
+  def test_updated_waiting_line
+    @floor.arrive [Person.new(desired_floor: 2), Person.new(desired_floor: 2), Person.new(desired_floor: 2)]
+    assert_equal 3, @floor.count_line
+    @floor.update_waiting_line 3, :up
+    assert_equal 0, @floor.count_line
+  end
+
   def test_arriving
     @building.floor(1).add_person Person.new(desired_floor: 2)
     @building.floor(1).add_person Person.new(desired_floor: 2)
@@ -66,7 +73,7 @@ class TestFloor < Minitest::Test
     @elevator.moving_direction = :stopped
     @elevator.move
     assert_equal 0, floor.count_line
-    assert_equal 2, @elevator.count_passengers
+    assert_equal 2, @elevator.passenger_count
 
   end
 
