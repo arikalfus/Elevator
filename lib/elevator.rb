@@ -39,7 +39,12 @@ class Elevator
   def move
 
     if moving_direction == :up
-      move_up
+      if read_passenger_desires
+        @moving_direction = :down
+        move
+      else
+        move_up
+      end
     elsif moving_direction == :down
       move_down
     elsif moving_direction == :stopped
@@ -134,6 +139,17 @@ class Elevator
     raise Error, '#begin_moving was called somewhere other than ELEV_RESTING_FLOOR' unless current_floor == ELEV_RESTING_FLOOR
     @moving_direction = :up
     move
+  end
+
+  # Checks if any passengers want to get off on a higher floor
+  def read_passenger_desires
+    (current_floor..max_floors).each { |floor_num| check_desires floor_num }
+    false # else, no more passengers to unload
+  end
+
+  # Checks if any passengers want to get off at floor floor_num
+  def check_desires(floor_num)
+    true unless passengers[floor_num].empty?
   end
 
 end
