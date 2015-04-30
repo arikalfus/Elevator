@@ -2,22 +2,28 @@ require 'pry-byebug'
 
 class Floor
 
-  attr_reader :position, :persons, :building
+  attr_reader :position, :waiting_line, :building, :waiting_count
 
   def initialize(params)
     @position = params[:position] # int position from 1 to n
-    @persons = params[:persons] || { up: [], down: [] } # hash of people waiting for an elevator, keys are up/down and values are arrays of Persons
+    @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
+    # up/down and values are arrays of Persons
     @building = params[:building]
+    @waiting_count = 0
+
   end
 
   # add Person object to this floor in the correct queue
   def add_person(person)
     current_position = position <=> person.desired_floor
     if current_position == 1 # person is above their desired floor
-      persons[:down].push person
+      waiting_line[:down].push person
+      @waiting_count += 1
     elsif current_position == -1 # person is below their desired floor
-      persons[:up].push person
-    # else, person is on their desired floor, person 'disappears'
+      waiting_line[:up].push person
+      @waiting_count += 1
+    else
+
     end
 
     building.log_pickup_request position
@@ -35,23 +41,24 @@ class Floor
   # Remove Persons from appropriate queue after boarding an Elevator
   def update_waiting_line(num_boarded, direction)
 
-    waiting_line = get_waiting direction
-    waiting_line.slice! 0...num_boarded
-    @persons[direction] = waiting_line
+    waiting = get_waiting direction
+    waiting.slice! 0...num_boarded
+    @waiting_line[direction] = waiting
+    @waiting_count -= num_boarded
 
-    @building.remove_pickup_request(position) if persons[direction].empty?
+    @building.remove_pickup_request(position) if waiting_line[direction].empty?
 
   end
 
   # Returns an array of Persons waiting for an elevator going direction
   def get_waiting(direction)
-    persons[direction]
+    waiting_line[direction]
   end
 
   # Returns number of people waiting for an elevator
   def count_line
     num = 0
-    persons.values.each { |array| array.each { |_| num += 1} }
+    waiting_line.values.each { |array| array.each { |_| num += 1} }
     num
   end
 

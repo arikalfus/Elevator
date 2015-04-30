@@ -60,12 +60,33 @@ class TestElevator < Minitest::Test
     assert_equal 2, @elevator.current_floor
   end
 
+  def test_board
+    @building.floor(1).add_person Person.new(desired_floor: 2)
+    @elevator.moving_direction = :up
+    assert_equal 1, @building.floor(1).count_line
+    @elevator.board @building.floor(1)
+
+    assert_equal 1, @elevator.passenger_count
+    assert_equal 0, @building.floor(1).count_line
+  end
+
+  def test_exit_elevator
+    @elevator.board_person Person.new(desired_floor: 1)
+    assert_equal 1, @elevator.passenger_count
+    @elevator.exit_elevator # elevator is on floor 1
+
+    assert_equal 0, @elevator.passenger_count
+  end
+
   def test_start_turn
     assert_equal :stopped, @elevator.moving_direction
     @building.floor(@elevator.current_floor).add_person Person.new(desired_floor: 3)
 
     @elevator.start_turn
     assert_equal 1, @elevator.count_passengers
+
+    @elevator.start_turn # elevator gets to 3rd floor
+    assert_equal 0, @elevator.count_passengers
   end
 
 end
