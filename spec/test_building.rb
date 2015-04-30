@@ -10,9 +10,9 @@ class TestBuilding < Minitest::Test
     @building = Building.new
     @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building), 2 => Floor.new(position: 2, building: @building),
                                      3 => Floor.new(position: 3, building: @building)})
-    @building.build_elevators(elevators: [Elevator.new(building: @building),
-                                          Elevator.new(building: @building),
-                                          Elevator.new(building: @building)])
+    @building.build_elevators(elevators: [Elevator.new(building: @building, elev_num: 1),
+                                          Elevator.new(building: @building, elev_num: 2),
+                                          Elevator.new(building: @building, elev_num: 3)])
 
   end
 

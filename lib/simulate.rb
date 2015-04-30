@@ -95,7 +95,7 @@ class Simulate
   def self.build_elevators(elevator_params)
     elevators = Array.new
     (0...elevator_params[:num]).each do |i|
-      elevator = Elevator.new elevator_params[:building]
+      elevator = Elevator.new elevator_params[:building].merge(elev_num: i)
       elevators.push elevator
     end
   end

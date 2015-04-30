@@ -5,11 +5,12 @@ class Elevator
   ELEV_MAX_PERSONS = 20
   ELEV_RESTING_FLOOR = 1
 
-  attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count
+  attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count, :number
   attr_accessor :moving_direction
 
   def initialize(params)
 
+    @number = params[:elev_num]
     @building = params[:building]
     @max_floors = building.number_of_floors
     @moving_direction = :stopped
@@ -21,7 +22,7 @@ class Elevator
   def start_turn
 
     move
-    # TODO: passengers exit the elevator
+    exit_elevator
 
   end
 
@@ -68,11 +69,12 @@ class Elevator
 
   end
 
-  def exit_elevator(floor)
+  def exit_elevator
     persons_exiting = passengers[current_floor]
     @passenger_count -= persons_exiting.count
     @passengers[current_floor].clear
-    floor.arrive persons_exiting
+    # Add exiting passengers to current floor
+    building.floor(current_floor).arrive persons_exiting
   end
 
   # Passengers are inserted into passengers array ordered by what floor they want to get off at
@@ -92,7 +94,13 @@ class Elevator
   end
 
   def to_s
-    #TODO: this
+    %Q(
+    Elevator #{number}:
+      Passengers: #{passenger_count} of maximum #{ELEV_MAX_PERSONS} people
+      Current floor: #{current_floor}
+      Moving #{moving_direction}
+      Resting floor is Floor #{ELEV_RESTING_FLOOR}
+         )
   end
 
   # ---------

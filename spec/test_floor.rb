@@ -9,9 +9,10 @@ class TestFloor < Minitest::Test
   def setup
     @building = Building.new
     @floor = Floor.new(position: 3, building: @building)
-    @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building), 2 => Floor.new(position: 2, building: @building),
+    @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building),
+                                     2 => Floor.new(position: 2, building: @building),
                                      3 => @floor})
-    @elevator = Elevator.new(building: @building)
+    @elevator = Elevator.new(building: @building, elev_num: 1)
     @building.build_elevators(elevators: [@elevator])
   end
 
@@ -68,5 +69,12 @@ class TestFloor < Minitest::Test
     assert_equal 2, @elevator.count_passengers
 
   end
+
+  # def test_to_s
+  #   @floor.add_person Person.new(desired_floor: 3)
+  #   @floor.add_person Person.new(desired_floor: 2)
+  #   @floor.add_person Person.new(desired_floor: 4)
+  #   puts @floor.to_s
+  # end
 
 end
