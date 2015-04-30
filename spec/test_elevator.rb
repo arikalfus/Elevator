@@ -53,7 +53,7 @@ class TestElevator < Minitest::Test
     # Test unable to go above top floor
     # elevator moves down if move command is sent when on top floor
     @elevator.moving_direction = :up
-    (@elevator.current_floor..@elevator.max_floors).each { |_| @elevator.move }
+    (@elevator.current_floor...@elevator.max_floors).each { |_| @elevator.move }
     assert_equal 3, @elevator.current_floor
     @elevator.move
     assert_equal :down, @elevator.moving_direction

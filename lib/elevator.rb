@@ -139,7 +139,7 @@ class Elevator
     desire = false
     (current_floor..max_floors).each do |floor_num|
       desire_check = check_desires floor_num
-      desire = true if desire_check
+      desire = desire_check
     end
 
     # After checking if any passengers need to go up, ask building if anyone above current floor is waiting for an elevator
