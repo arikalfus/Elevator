@@ -91,6 +91,14 @@ class Elevator
     passengers.values.flatten
   end
 
+  def to_s
+    #TODO: this
+  end
+
+  # ---------
+  # Private methods below
+  # ---------
+
   private
 
   # Passengers are stored in a hash where each key is a floor number corresponding to an array of passengers desiring that floor

@@ -62,6 +62,10 @@ class Building
 
   end
 
+  def remove_pickup_request(floor_num)
+    pickup_requests.delete floor_num
+  end
+
   def to_s
     #TODO: This
   end

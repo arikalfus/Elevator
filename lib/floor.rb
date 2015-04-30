@@ -39,6 +39,8 @@ class Floor
     waiting_line.slice! 0...num_boarded
     @persons[direction] = waiting_line
 
+    @building.remove_pickup_request(position) if persons[direction].empty?
+
   end
 
   # Returns an array of Persons waiting for an elevator going direction
@@ -60,6 +62,10 @@ class Floor
 
   def ==(other)
     position == other.position
+  end
+
+  def to_s
+    # TODO: this
   end
 
 end
