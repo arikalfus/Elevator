@@ -69,11 +69,11 @@ class TestElevator < Minitest::Test
 
   def test_start_turn
     assert_equal :stopped, @elevator.moving_direction
-    floor = @elevator.building.floors[@elevator.current_floor]
+    floor = @elevator.building.floor @elevator.current_floor
     floor.add_person Person.new(desired_floor: 2)
 
     @elevator.start_turn
-    assert_equal 1, @elevator.count
+    assert_equal 1, @elevator.count_passengers
   end
 
 end

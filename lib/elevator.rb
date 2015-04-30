@@ -56,7 +56,7 @@ class Elevator
     boarded = 0
 
     unless moving_direction == :stopped
-      waiting_line = floor.persons[moving_direction]
+      waiting_line = floor.get_waiting moving_direction
 
       waiting_line.each do |person|
         unless passengers.count == ELEV_MAX_PERSONS
@@ -65,9 +65,15 @@ class Elevator
         end
       end
 
-      floor.board_elevator boarded, moving_direction # update floor
+      floor.update_waiting_line boarded, moving_direction # update floor
     end
 
+  end
+
+  def exit_elevator(floor)
+    persons_exiting = passengers[current_floor]
+    @passengers[current_floor].clear
+    floor.arrive persons_exiting
   end
 
   # Passengers are inserted into passengers array ordered by what floor they want to get off at
@@ -76,7 +82,7 @@ class Elevator
   end
 
   # Returns the number of passengers onboard the elevator.
-  def count
+  def count_passengers
     num = 0
     passengers.values.each {|array| array.each {|_| num += 1 } }
     num
@@ -103,7 +109,7 @@ class Elevator
       @moving_direction = :down
       move
     else
-      board building.floors[current_floor]
+      board building.floor(current_floor)
       @current_floor += 1
     end
 
@@ -117,7 +123,7 @@ class Elevator
       @moving_direction = :up
       move
     else
-      board building.floors[current_floor]
+      board building.floor(current_floor)
       @current_floor -= 1
     end
 
@@ -125,6 +131,7 @@ class Elevator
 
   # Method should only be called if elevator is at ELEV_RESTING_FLOOR
   def begin_moving
+    raise Error, '#begin_moving was called somewhere other than ELEV_RESTING_FLOOR' unless current_floor == ELEV_RESTING_FLOOR
     @moving_direction = :up
     move
   end

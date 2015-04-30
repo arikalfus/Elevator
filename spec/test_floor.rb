@@ -21,11 +21,9 @@ class TestFloor < Minitest::Test
   end
 
   def test_add_person
-    orig_people = 0
-    @floor.persons.values.each { |array| array.each {|_| orig_people += 1 } }
+    orig_people = @floor.count_line
     @floor.add_person Person.new({desired_floor: 3})
-    cur_people = 0
-    @floor.persons.values.each { |array| array.each {|_| cur_people += 1 } }
+    cur_people = @floor.count_line
     assert_equal orig_people + 1, cur_people
   end
 
@@ -45,16 +43,29 @@ class TestFloor < Minitest::Test
   def test_boarding
     @elevator.go_to_floor 6
     @elevator.moving_direction = :down
-    person1 = Person.new({desired_floor: 1})
-    person2 = Person.new({desired_floor: 1})
+    person1 = Person.new(desired_floor: 1)
+    person2 = Person.new(desired_floor: 1)
     @floor.add_person person1
     @floor.add_person person2
     @elevator.board @floor
     assert_equal [person1, person2], @elevator.get_passengers
-    people_on_floor = 0
-    @floor.persons.values.each{ |array| array.each { |_| people_on_floor += 1 }
+    people_on_floor = @floor.count_line
 
-    assert_equal 0, people_on_floor}
+    assert_equal 0, people_on_floor
+  end
+
+  def test_arriving
+    floor1 = Floor.new(position: 1, building: @building)
+    floor2 = Floor.new(position: 2, building: @building)
+
+    floor1.arrive([Person.new(desired_floor: 2), Person.new(desired_floor: 2)])
+    assert_equal 2, floor1.count_line
+
+    @elevator.moving_direction = :up
+    @elevator.move
+    assert_equal 0, floor1.count_line
+    assert_equal 2, @elevator.count_passengers
+
   end
 
 end
