@@ -21,4 +21,9 @@ class TestBuilding < Minitest::Test
     assert_equal 3, @building.number_of_floors
   end
 
+  def test_floor
+    floor = @building.floor 1
+    assert_equal floor, Floor.new(position: 1, building: @building) # floors are compared by position number
+  end
+
 end

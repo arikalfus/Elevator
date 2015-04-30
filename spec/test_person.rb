@@ -8,8 +8,8 @@ class TestPerson < Minitest::Test
     @person = Person.new({desired_floor: 1})
   end
 
-  def test_initialization
-    assert_instance_of Person, @person
+  def test_desire
+    assert_instance_of Fixnum, @person.desired_floor
   end
 
 end
