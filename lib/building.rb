@@ -28,8 +28,6 @@ class Building
 
   def start_turn
     elevators.each { |elevator| elevator.start_turn }
-
-    sleep 1
     to_s
   end
 

@@ -50,4 +50,12 @@ class TestBuilding < Minitest::Test
     assert_equal false, requests3
   end
 
+  def test_delete_pickup_request
+    assert_equal [], @building.get_all_pickup_requests
+    @building.log_pickup_request 2
+    assert_equal [2], @building.get_all_pickup_requests
+    @building.remove_pickup_request 2
+    assert_equal [], @building.get_all_pickup_requests
+  end
+
 end

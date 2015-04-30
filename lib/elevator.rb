@@ -144,14 +144,10 @@ class Elevator
   # Checks if any passengers want to get off on a higher floor
   def read_passenger_desires
 
-    desire = false
-    (current_floor..max_floors).each do |floor_num|
-      desire_check = check_desires floor_num
-      desire = desire_check
-    end
+    ((current_floor + 1)..max_floors).each { |floor_num| return true if check_desires floor_num }
 
     # After checking if any passengers need to go up, ask building if anyone above current floor is waiting for an elevator
-    desire || building.check_pickup_requests(current_floor)
+    building.check_pickup_requests current_floor
 
   end
 
