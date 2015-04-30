@@ -11,16 +11,14 @@ class Simulate
   #
   # See #build_simulation for initialization of other instance variables
   #
-  def initialize(params)
-    @max_turns = params[:turns]
+  def initialize(turns)
+    @max_turns = turns
     @clock_time = 0
   end
 
-  def self.run(num_turns)
-    params = construct_object_params
-    params[:turns] = num_turns
-    initialize params
-    (0...num_turns).each do |i|
+  def run
+    construct_object_params
+    (0...@max_turns).each do |i|
       clock_tick
     end
   end
@@ -31,16 +29,21 @@ class Simulate
     else
       @clock_time += 1
       building.start_turn
+      to_s
       sleep 1
       clock_tick
     end
 
   end
 
+  def to_s
+    puts 'Turn'
+  end
+
 
   private
 
-  def self.construct_object_params
+  def construct_object_params
     puts 'Would you like to run an automated simulation, or would you like to manually configure the objects? ([A]utomated/[M]anual): '
     construct_method = gets.chomp
     if construct_method.downcase == 'a'
@@ -55,36 +58,36 @@ class Simulate
   end
 
   # Construct simulation with 3 floors, 1 elevator, and 1 person.
-  def self.auto_construct
-    build_simulation({floor_params: [{position: 1, person_params: [{desired_floor: 2}]},
+  def auto_construct
+    build_simulation({floor_params: [{position: 1, person_params: [{desired_floor: 3}]},
                                      {position: 2},
                                      {position: 3}],
                       num_of_elevators: 1,
                       building: self})
   end
 
-  def self.build_manual_construct
+  def build_manual_construct
     # TODO: fill this out
     puts "\n", 'Manual construction is in development and is unavailable at this time! Please restart the application
  and select the "Automated" option.'
   end
 
-  def self.build_simulation(params)
+  def build_simulation(params)
+    @building = Building.new
     floors = build_floors params[:floor_params]
     @floors = floors
     elevators = build_elevators({building: self, num: params[:num_of_elevators]})
     @elevators = elevators
 
-    @building = Building.new
-    @building.build_floors floors: @floors
-    @building.build_elevators elevators: @elevators
+    @building.add_floors floors: @floors
+    @building.add_elevators elevators: @elevators
   end
 
-  def self.build_floors(floor_params)
+  def build_floors(floor_params)
     floors = Hash.new
     floor_params.each do |floor_param|
       people = build_people floor_param[:person_params]
-      floor = Floor.new floor_param.merge({persons: people})
+      floor = Floor.new floor_param.merge({persons: people, building: @building})
       # Add key->value from integer floor num to Floor object for that floor
       floors[floor.position] = floor
     end
@@ -92,15 +95,17 @@ class Simulate
     floors
   end
 
-  def self.build_elevators(elevator_params)
+  def build_elevators(elevator_params)
     elevators = Array.new
     (0...elevator_params[:num]).each do |i|
-      elevator = Elevator.new elevator_params[:building].merge(elev_num: i)
+      elevator = Elevator.new elevator_params.merge(elev_num: i, building: @building)
       elevators.push elevator
     end
+
+    elevators
   end
 
-  def self.build_people(persons_params)
+  def build_people(persons_params)
     if persons_params.nil?
       nil
     else

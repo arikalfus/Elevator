@@ -9,11 +9,11 @@ class TestFloor < Minitest::Test
   def setup
     @building = Building.new
     @floor = Floor.new(position: 3, building: @building)
-    @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building),
+    @building.add_floors(floors: { 1 => Floor.new(position: 1, building: @building),
                                      2 => Floor.new(position: 2, building: @building),
                                      3 => @floor})
     @elevator = Elevator.new(building: @building, elev_num: 1)
-    @building.build_elevators(elevators: [@elevator])
+    @building.add_elevators(elevators: [@elevator])
   end
 
 

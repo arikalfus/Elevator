@@ -10,11 +10,11 @@ class Building
     @pickup_requests = Set.new
   end
 
-  def build_floors(params)
+  def add_floors(params)
     @floors = params[:floors]
   end
 
-  def build_elevators(params)
+  def add_elevators(params)
     @elevators = params[:elevators]
   end
 
@@ -65,7 +65,11 @@ class Building
   end
 
   def to_s
-    #TODO: This
+    %Q(
+    Building stats:
+      Number of floors: #{number_of_floors}
+      Number of elevators: #{number_of_elevators}
+    )
   end
 
 end

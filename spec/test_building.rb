@@ -8,9 +8,10 @@ class TestBuilding < Minitest::Test
 
   def setup
     @building = Building.new
-    @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building), 2 => Floor.new(position: 2, building: @building),
+    @building.add_floors(floors: { 1 => Floor.new(position: 1, building: @building), 2 => Floor.new(position: 2,
+                                                                                                  building: @building),
                                      3 => Floor.new(position: 3, building: @building)})
-    @building.build_elevators(elevators: [Elevator.new(building: @building, elev_num: 1),
+    @building.add_elevators(elevators: [Elevator.new(building: @building, elev_num: 1),
                                           Elevator.new(building: @building, elev_num: 2),
                                           Elevator.new(building: @building, elev_num: 3)])
 
@@ -57,5 +58,9 @@ class TestBuilding < Minitest::Test
     @building.remove_pickup_request 2
     assert_equal [], @building.get_all_pickup_requests
   end
+
+  # def test_to_s
+  #   puts @building.to_s
+  # end
 
 end
