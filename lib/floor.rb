@@ -2,13 +2,14 @@ require 'pry-byebug'
 
 class Floor
 
-  attr_reader :position, :waiting_line, :building, :waiting_count
+  attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
 
   def initialize(params)
     @position = params[:position] # int position from 1 to n
     @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
     # up/down and values are arrays of Persons
     @building = params[:building]
+    @inhabitants = Array.new
     @waiting_count = 0
 
   end
@@ -22,8 +23,8 @@ class Floor
     elsif current_position == -1 # person is below their desired floor
       waiting_line[:up].push person
       @waiting_count += 1
-    else
-
+    else # person belongs to this floor
+      @inhabitants.push person
     end
 
     building.log_pickup_request position
@@ -72,7 +73,13 @@ class Floor
   end
 
   def to_s
-    # TODO: this
+    %Q(
+    Floor #{position}:
+      Inhabitants: #{inhabitants.count}
+      Total people waiting for elevators: #{waiting_count}
+        - Waiting for 'up' elevator: #{waiting_line[:up].count}
+        - Waiting for 'down' elevator: #{waiting_line[:down].count}
+         )
   end
 
 end

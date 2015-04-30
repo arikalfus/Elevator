@@ -11,7 +11,7 @@ class TestElevator < Minitest::Test
     @building.build_floors(floors: { 1 => Floor.new(position: 1, building: @building),
                                      2 => Floor.new(position: 2, building: @building),
                                      3 => Floor.new(position: 3, building: @building)})
-    @elevator = Elevator.new building: @building
+    @elevator = Elevator.new(building: @building, elev_num: 1)
     @building.build_elevators(elevators: [@elevator])
   end
 
@@ -88,5 +88,11 @@ class TestElevator < Minitest::Test
     @elevator.start_turn # elevator gets to 3rd floor
     assert_equal 0, @elevator.count_passengers
   end
+
+  # def test_to_s
+  #   @elevator.board_person Person.new(desired_floor: 3)
+  #   @elevator.move
+  #   puts @elevator.to_s
+  # end
 
 end

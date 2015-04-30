@@ -5,11 +5,12 @@ class Elevator
   ELEV_MAX_PERSONS = 20
   ELEV_RESTING_FLOOR = 1
 
-  attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count
+  attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count, :number
   attr_accessor :moving_direction
 
   def initialize(params)
 
+    @number = params[:elev_num]
     @building = params[:building]
     @max_floors = building.number_of_floors
     @moving_direction = :stopped
@@ -93,7 +94,13 @@ class Elevator
   end
 
   def to_s
-    #TODO: this
+    %Q(
+    Elevator #{number}:
+      Passengers: #{passenger_count} of maximum #{ELEV_MAX_PERSONS} people
+      Current floor: #{current_floor}
+      Moving #{moving_direction}
+      Resting floor is Floor #{ELEV_RESTING_FLOOR}
+         )
   end
 
   # ---------
