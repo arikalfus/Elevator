@@ -59,7 +59,14 @@ class TestFloor < Minitest::Test
   def test_updated_waiting_line
     @floor.arrive [Person.new(desired_floor: 2), Person.new(desired_floor: 2), Person.new(desired_floor: 2)]
     assert_equal 3, @floor.count_line
-    @floor.update_waiting_line 3, :up
+
+    @floor.update_waiting_line 0, :up
+    assert_equal 3, @floor.count_line
+
+    @floor.update_waiting_line 2, :up
+    assert_equal 1, @floor.count_line
+
+    @floor.update_waiting_line 1, :up
     assert_equal 0, @floor.count_line
   end
 
@@ -75,6 +82,18 @@ class TestFloor < Minitest::Test
     assert_equal 0, floor.count_line
     assert_equal 2, @elevator.passenger_count
 
+  end
+
+  def test_count_line
+    assert_equal 0, @floor.count_line
+    @floor.add_person Person.new(desired_floor: 2)
+    assert_equal 1, @floor.count_line
+  end
+
+  def test_count_inhabitants
+    assert_equal 0, @floor.inhabitant_count
+    @floor.add_person Person.new(desired_floor: 3)
+    assert_equal 1, @floor.inhabitant_count
   end
 
   # def test_to_s
