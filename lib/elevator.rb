@@ -25,21 +25,11 @@ class Elevator
 
   end
 
-  # Returns floor object unless desired floor is current position of elevator
-  #
-  # Only used for testing purposes -- no need in final design
-  # TODO: Remove this method at the end
-  def go_to_floor(floor_num)
-
-    @current_floor = floor_num if floor_num >= ELEV_RESTING_FLOOR and floor_num <= max_floors
-
-  end
-
   # Elevator moves up/down based on current moving_direction
   def move
 
     if moving_direction == :up
-      if read_passenger_desires
+      unless read_passenger_desires
         @moving_direction = :down
         move
       else
@@ -145,13 +135,14 @@ class Elevator
   # Checks if any passengers want to get off on a higher floor
   def read_passenger_desires
 
+    desire = false
     (current_floor..max_floors).each do |floor_num|
-      desire = check_desires floor_num
-      return desire if desire # if there is a passenger wishing to go up, break and return
+      desire_check = check_desires floor_num
+      desire = true if desire_check
     end
 
     # After checking if any passengers need to go up, ask building if anyone above current floor is waiting for an elevator
-    building.check_pickup_requests current_floor
+    desire || building.check_pickup_requests(current_floor)
 
   end
 

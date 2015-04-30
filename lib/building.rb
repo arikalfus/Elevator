@@ -57,10 +57,8 @@ class Building
     nums = Array.new
     total_floors = floors.keys.count
 
-    (floor_num..total_floors).each do |floor|
-      if floor > floor_num
+    ((floor_num + 1)..total_floors).each do |floor|
         return true if pickup_requests.include? floor
-      end
     end
 
     false

@@ -38,4 +38,16 @@ class TestBuilding < Minitest::Test
     assert_equal [3], @building.get_all_pickup_requests
   end
 
+  def check_pickup_requests
+    @building.log_pickup_request 3
+    requests = @building.check_pickup_requests 1
+    assert_equal true, requests
+
+    requests2 = @building.check_pickup_requests 3
+    assert_equal false, requests2
+
+    requests3 = @building.check_pickup_requests 5
+    assert_equal false, request3
+  end
+
 end
