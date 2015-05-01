@@ -1,8 +1,11 @@
+require 'pry-byebug'
+
 class Floor
 
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
 
   def initialize(params)
+    binding.pry
     @position = params[:position] # int position from 1 to n
     @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
     # up/down and values are arrays of Persons

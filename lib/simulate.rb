@@ -35,7 +35,24 @@ class Simulate
 
   # TODO: This
   def to_s
-    puts 'Turn'
+
+    puts "Turn #{clock_time}:"
+    (1..@building.number_of_floors).reverse_each do |i|
+      @building.elevators.each do |elevator|
+        print '|'
+        if elevator.current_floor == @building.floors[i].position
+          print "[#{elevator.passenger_count}]"
+        else
+          print '[ ]'
+        end
+      end
+      print '|'
+      print "[#{@building.floors[i].waiting_count}]"
+      print "[#{@building.floors[i].inhabitant_count}]"
+      puts "\n"
+    end
+    puts "\n"
+
   end
 
 
@@ -60,15 +77,16 @@ class Simulate
   def auto_construct
 
     build_simulation(floor_params: [{position: 1, waiting_line: {up: [Person.new(desired_floor: 3)], down: []}, building: @building},
-                                     {position: 2, building: @building},
-                                     {position: 3}, building: @building],
-                     num_of_elevators: 1)
+                                    {position: 2, building: @building},
+                                    {position: 3, waiting_line: {up: [Person.new(desired_floor: 5)], down: []}, building: @building},
+                                    {position: 4, building: @building},
+                                    {position: 5, waiting_line: {up: [], down: [Person.new(desired_floor: 1), Person.new(desired_floor: 3)]}, building: @building}],
+                     num_of_elevators: 2)
   end
 
   def build_manual_construct
-    # TODO: fill this out
-    puts "\n", 'Manual construction is in development and is unavailable at this time! Please restart the application
- and select the "Automated" option.'
+    abort "\nManual construction is not available at this time. Please restart the application
+ and select the 'Automated' option."
   end
 
   def build_simulation(params)
