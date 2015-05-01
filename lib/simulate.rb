@@ -20,7 +20,7 @@ class Simulate
   # Run a simulation for max_turns turns
   def run
     construct_object_params
-    (0...max_turns).each { |_| clock_tick }
+    (0...max_turns).each { clock_tick }
   end
 
   # Run one turn of the simulation

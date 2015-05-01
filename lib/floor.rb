@@ -1,17 +1,14 @@
-require 'pry-byebug'
-
 class Floor
 
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
 
   def initialize(params)
-    binding.pry
     @position = params[:position] # int position from 1 to n
     @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
     # up/down and values are arrays of Persons
     @building = params[:building]
     @inhabitants = Array.new
-    @waiting_count = 0
+    calc_waiting_count
 
   end
 
@@ -84,6 +81,13 @@ class Floor
         - Waiting for 'up' elevator: #{waiting_line[:up].count}
         - Waiting for 'down' elevator: #{waiting_line[:down].count}
          )
+  end
+
+  private
+
+  def calc_waiting_count
+    @waiting_count = 0
+    waiting_line.values.each { |array| array.each { @waiting_count += 1 } }
   end
 
 end
