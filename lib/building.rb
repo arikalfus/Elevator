@@ -30,8 +30,6 @@ class Building
 
   # Run each elevator for one turn
   def start_turn
-    # # Redundancy check: log pickup requests if floor has waiting passengers
-    # floors.values.each { |floor| log_pickup_request(floor.position) if floor.waiting_count > 0 }
     # Run each elevator
     elevators.each { |elevator| elevator.start_turn }
   end
