@@ -1,7 +1,7 @@
 class Elevator
 
-  ELEV_MAX_PERSONS = 20
-  ELEV_RESTING_FLOOR = 1
+  ELEV_MAX_PERSONS = 20 # maximum number of people allowed in this elevator
+  ELEV_RESTING_FLOOR = 1 # floor elevator returns to when it is not being called by a floor
 
   attr_reader :building, :max_floors, :current_floor, :passengers, :passenger_count, :number
   attr_accessor :moving_direction
@@ -27,7 +27,7 @@ class Elevator
   def move
 
     if moving_direction == :up
-      if read_passenger_desires
+      if read_passenger_desires # Checks if there are passengers wishing to go up or if there are pickup requests
         move_up
       else
         @moving_direction = :down
@@ -68,12 +68,13 @@ class Elevator
 
   end
 
-  #
+  # Un-board passengers onto floor current_floor
   def exit_elevator
     persons_exiting = passengers[current_floor]
     @passenger_count -= persons_exiting.count
     # Add exiting passengers to current floor
     building.floor(current_floor).arrive persons_exiting
+    # Remove the passengers from the elevator
     @passengers[current_floor].clear
   end
 
@@ -112,28 +113,30 @@ class Elevator
     @passenger_count = 0
   end
 
+  # Board elevator and go up one floor
   def move_up
 
     @moving_direction = :down if current_floor + 1 == max_floors
 
-    if current_floor == max_floors
+    if current_floor == max_floors # checks if elevator is on top floor
       @moving_direction = :down
       move
     else
-      board building.floor(current_floor)
-      @current_floor += 1
+      board building.floor(current_floor) # board passengers from this floor
+      @current_floor += 1 # move up one floor
     end
 
   end
 
+  # Board elevator and go down one floor
   def move_down
 
     @moving_direction = :stopped if current_floor - 1 == ELEV_RESTING_FLOOR or current_floor == ELEV_RESTING_FLOOR
 
-    # A call to #move_down when on ELEV_RESTING_FLOOR does nothing
+    # A call to move_down when on ELEV_RESTING_FLOOR does nothing
     unless current_floor == ELEV_RESTING_FLOOR
-      board building.floor(current_floor)
-      @current_floor -= 1
+      board building.floor(current_floor) # board passengers from this floor
+      @current_floor -= 1 # move down one floor
     end
 
   end
@@ -147,9 +150,10 @@ class Elevator
   # Checks if any passengers want to get off on a higher floor
   def read_passenger_desires
 
+    # Checks if any passengers wish to go to a higher floor
     ((current_floor + 1)..max_floors).each { |floor_num| return true if check_desires floor_num }
 
-    # After checking if any passengers need to go up, ask building if anyone above current floor is waiting for an elevator
+    # Ask if building has logged any pickup requests for a higher floor
     building.check_pickup_requests current_floor
 
   end

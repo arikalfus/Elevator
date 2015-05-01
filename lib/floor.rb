@@ -1,14 +1,13 @@
-require 'pry-byebug'
-
 class Floor
 
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
 
   def initialize(params)
+
     @building = params[:building]
     @position = params[:position] # int position from 1 to n
-    @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
-    # up/down and values are arrays of Persons
+    # hash of people waiting for an elevator, keys are up/down and values are arrays of Persons
+    @waiting_line = params[:waiting_line] || { up: [], down: [] }
     @inhabitants = Array.new
     calc_waiting_count
 
@@ -20,14 +19,16 @@ class Floor
     if current_position == 1 # person is above their desired floor
       waiting_line[:down].push person
       @waiting_count += 1
+      building.log_pickup_request position
+
     elsif current_position == -1 # person is below their desired floor
       waiting_line[:up].push person
       @waiting_count += 1
+      building.log_pickup_request position
+
     else # person belongs to this floor
       @inhabitants.push person
     end
-
-    building.log_pickup_request position
   end
 
   # Add an array of persons to the floor
@@ -47,6 +48,7 @@ class Floor
     @waiting_line[direction] = waiting
     @waiting_count -= num_boarded
 
+    # Send notice to @building to remove this floor's pickup request
     @building.remove_pickup_request(position) if waiting_line[direction].empty?
 
   end

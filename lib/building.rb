@@ -18,14 +18,17 @@ class Building
     @elevators = params[:elevators]
   end
 
+  # Return number of elevators in building, or an exception if building has not been properly initialized
   def number_of_elevators
     elevators.nil? ? raise(Exception,'No elevators exist! You should run the #build_elevators method.') : elevators.count
   end
 
+  # Return number of floors in building, or an exception if building has not been properly initialized
   def number_of_floors
     floors.nil? ? raise(Exception, 'No floors exist! You should run the #build_floors method.') : floors.keys.count
   end
 
+  # Run each elevator for one turn
   def start_turn
     elevators.each { |elevator| elevator.start_turn }
   end
@@ -45,7 +48,7 @@ class Building
     pickup_requests.to_a
   end
 
-  # Returns a boolean referring to whether there are pickup requests ABOVE the floor_num
+  # Returns a boolean referring to whether there are pickup requests above the floor_num
   def check_pickup_requests(floor_num)
 
     nums = Array.new
