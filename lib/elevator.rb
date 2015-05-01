@@ -17,11 +17,10 @@ class Elevator
 
   end
 
+  # Elevator boards, moves to a new floor, and un-boards
   def start_turn
-
     move
     exit_elevator
-
   end
 
   # Elevator moves up/down based on current moving_direction
@@ -55,6 +54,7 @@ class Elevator
     unless moving_direction == :stopped
       waiting_line = floor.get_waiting moving_direction
 
+      # Board each person onto the elevator
       waiting_line.each do |person|
         unless passenger_count == ELEV_MAX_PERSONS
           board_person person
@@ -62,11 +62,13 @@ class Elevator
         end
       end
 
-      floor.update_waiting_line boarded, moving_direction # update floor
+      # remove boarded Persons from floor's waiting line
+      floor.update_waiting_line boarded, moving_direction
     end
 
   end
 
+  #
   def exit_elevator
     persons_exiting = passengers[current_floor]
     @passenger_count -= persons_exiting.count

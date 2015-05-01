@@ -28,7 +28,6 @@ class Building
 
   def start_turn
     elevators.each { |elevator| elevator.start_turn }
-    to_s
   end
 
   # Returns floor object corresponding to floor number

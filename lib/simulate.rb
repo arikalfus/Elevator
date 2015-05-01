@@ -3,6 +3,7 @@ require_relative 'elevator'
 require_relative 'floor'
 require_relative 'person'
 
+require 'pry-byebug'
 
 class Simulate
 
@@ -16,22 +17,20 @@ class Simulate
     @clock_time = 0
   end
 
+  # Run a simulation for max_turns turns
   def run
     construct_object_params
     (0...max_turns).each { |_| clock_tick }
   end
 
+  # Run one turn of the simulation
   def clock_tick
-    if clock_time == max_turns
-      puts "\n\n", 'Simulation complete.'
-    else
-      @clock_time += 1
-      @building.start_turn
-      to_s
-      sleep 1
-      clock_tick
-    end
+    @clock_time += 1
+    @building.start_turn
+    to_s
+    sleep 1
 
+    puts "\n", '-----------------', 'Simulation complete.' if clock_time == max_turns
   end
 
   # TODO: This
@@ -43,7 +42,8 @@ class Simulate
   private
 
   def construct_object_params
-    puts 'Would you like to run an automated simulation, or would you like to manually configure the objects? ([A]utomated/[M]anual): '
+    print 'Would you like to run an automated simulation, or would you like to manually configure the objects?
+([A]utomated/[M]anual): '
     construct_method = gets.chomp
     if construct_method.downcase == 'a'
       auto_construct
