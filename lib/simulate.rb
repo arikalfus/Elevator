@@ -132,6 +132,7 @@ class Simulate
 
   def print_start
     to_s
+    sleep 2
   end
 
 end

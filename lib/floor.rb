@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 class Floor
 
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
@@ -73,6 +75,7 @@ class Floor
     position == other.position
   end
 
+  # Displays helpful details about the Floor's current state
   def to_s
     %Q(
     Floor #{position}:

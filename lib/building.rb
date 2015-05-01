@@ -59,10 +59,12 @@ class Building
 
   end
 
+  # Deletes a pickup request from the Set of requests, indicating no more people on that floor need to be picked up
   def remove_pickup_request(floor_num)
     pickup_requests.delete floor_num
   end
 
+  # Displays helpful details about the Building's current state
   def to_s
     %Q(
     Building stats:

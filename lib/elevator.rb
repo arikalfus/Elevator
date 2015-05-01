@@ -88,6 +88,7 @@ class Elevator
     passengers.values.flatten
   end
 
+  # Displays helpful details about the Elevator's current state
   def to_s
     %Q(
     Elevator #{number}:
