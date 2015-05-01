@@ -6,7 +6,7 @@ require_relative 'person'
 
 class Simulate
 
-  attr_reader :building, :clock_time, :max_turns, :floors, :elevators
+  attr_reader :clock_time, :max_turns
 
   #
   # See #build_simulation for initialization of other instance variables
@@ -18,9 +18,7 @@ class Simulate
 
   def run
     construct_object_params
-    (0...@max_turns).each do |i|
-      clock_tick
-    end
+    (0...max_turns).each { |_| clock_tick }
   end
 
   def clock_tick
@@ -28,7 +26,7 @@ class Simulate
       puts "\n\n", 'Simulation complete.'
     else
       @clock_time += 1
-      building.start_turn
+      @building.start_turn
       to_s
       sleep 1
       clock_tick
@@ -36,6 +34,7 @@ class Simulate
 
   end
 
+  # TODO: This
   def to_s
     puts 'Turn'
   end
@@ -59,11 +58,11 @@ class Simulate
 
   # Construct simulation with 3 floors, 1 elevator, and 1 person.
   def auto_construct
-    build_simulation({floor_params: [{position: 1, person_params: [{desired_floor: 3}]},
-                                     {position: 2},
-                                     {position: 3}],
-                      num_of_elevators: 1,
-                      building: self})
+
+    build_simulation(floor_params: [{position: 1, waiting_line: {up: [Person.new(desired_floor: 3)], down: []}, building: @building},
+                                     {position: 2, building: @building},
+                                     {position: 3}, building: @building],
+                     num_of_elevators: 1)
   end
 
   def build_manual_construct
@@ -75,19 +74,17 @@ class Simulate
   def build_simulation(params)
     @building = Building.new
     floors = build_floors params[:floor_params]
-    @floors = floors
-    elevators = build_elevators({building: self, num: params[:num_of_elevators]})
-    @elevators = elevators
+    @building.add_floors floors: floors
 
-    @building.add_floors floors: @floors
-    @building.add_elevators elevators: @elevators
+    elevators = build_elevators params.merge(building: @building)
+    @building.add_elevators elevators: elevators
   end
 
+  # Constructs floors as a hash from floor_num => Floor
   def build_floors(floor_params)
     floors = Hash.new
     floor_params.each do |floor_param|
-      people = build_people floor_param[:person_params]
-      floor = Floor.new floor_param.merge({persons: people, building: @building})
+      floor = Floor.new floor_param
       # Add key->value from integer floor num to Floor object for that floor
       floors[floor.position] = floor
     end
@@ -95,27 +92,25 @@ class Simulate
     floors
   end
 
+  # Constructs elevators and places them in an array
   def build_elevators(elevator_params)
     elevators = Array.new
-    (0...elevator_params[:num]).each do |i|
-      elevator = Elevator.new elevator_params.merge(elev_num: i, building: @building)
+    (1..elevator_params[:num_of_elevators]).each do |i|
+      elevator = Elevator.new elevator_params.merge(elev_num: i)
       elevators.push elevator
     end
 
     elevators
   end
 
+  # Constructs Persons and places them in an array
   def build_people(persons_params)
-    if persons_params.nil?
-      nil
-    else
-      persons = Array.new
-      persons_params.each do |person_param|
-        person = Person.new person_param
-        persons.push person
-      end
-      persons
+    persons = Array.new
+    persons_params.each do |person_param|
+      person = Person.new person_param
+      persons.push person
     end
+    persons
   end
 
 end

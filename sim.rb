@@ -4,7 +4,7 @@ require_relative 'lib/simulate'
 class Sim
 
   def self.get_turns
-    puts 'How many times would you like to run this simulation? '
+    print 'How many times would you like to run this simulation? '
     Integer(gets.chomp)
   end
 

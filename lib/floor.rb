@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Floor
 
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
