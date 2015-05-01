@@ -15,6 +15,11 @@ On each ```Elevator's``` turn, several things are happening. First, the ```Eleva
 
 On each turn, before moving up the ```Elevator``` calculates whether any of its passengers want to go up or if there are any pickup requests on a floor above the ```Elevator```. If neither of these things are true, the ```Elevator``` stops moving up and moves down to its resting floor (which is set to the first floor in this simulation). When on the resting floor the ```Elevator``` stops moving unless there are new pickup requests logged.
 
+#### Floor
+When a new ```Person``` is added to a ```Floor```, they are inserted into a ```waiting_line``` hash by the location of their desired ```Floor``` relative to the ```Floor``` they are currently on (e.g. one would be suffled into the ```:up``` hash if they want to go to floor 5 and they are on floor 2). Then the ```Floor``` sends a pickup request to the ```Building``` to notify it that there is a ```Person``` waiting to be pickd up.
+
+Similarly, when a ```Person``` is boarded onto an elevator, the ```Floor``` checks whether there are any others waiting to board, and if not sends a message to ```Building``` to cancel its pickup request.
+
 ## Interesting Features
 #### Simulation
 One interesting feature I implemented in the ```Simulation``` class is the creation of a new ```Person``` on a random floor at random intervals. On each turn, there is a 1/3 chance of generating a new ```Person```. This feature led to the identification of a bug, which I explain below.
