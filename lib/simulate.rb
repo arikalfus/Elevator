@@ -76,11 +76,11 @@ class Simulate
   # Construct simulation with 3 floors, 1 elevator, and 1 person.
   def auto_construct
 
-    build_simulation(floor_params: [{position: 1, waiting_line: {up: [Person.new(desired_floor: 3)], down: []}, building: @building},
-                                    {position: 2, building: @building},
-                                    {position: 3, waiting_line: {up: [Person.new(desired_floor: 5)], down: []}, building: @building},
-                                    {position: 4, building: @building},
-                                    {position: 5, waiting_line: {up: [], down: [Person.new(desired_floor: 1), Person.new(desired_floor: 3)]}, building: @building}],
+    build_simulation(floor_params: [{position: 1, waiting_line: {up: [Person.new(desired_floor: 3)], down: []}},
+                                    {position: 2},
+                                    {position: 3, waiting_line: {up: [Person.new(desired_floor: 5)], down: []}},
+                                    {position: 4},
+                                    {position: 5, waiting_line: {up: [], down: [Person.new(desired_floor: 1), Person.new(desired_floor: 3)]}}],
                      num_of_elevators: 2)
   end
 
@@ -102,7 +102,7 @@ class Simulate
   def build_floors(floor_params)
     floors = Hash.new
     floor_params.each do |floor_param|
-      floor = Floor.new floor_param
+      floor = Floor.new floor_param.merge(building: @building)
       # Add key->value from integer floor num to Floor object for that floor
       floors[floor.position] = floor
     end

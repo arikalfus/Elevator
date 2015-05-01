@@ -3,10 +3,10 @@ class Floor
   attr_reader :position, :waiting_line, :building, :waiting_count, :inhabitants
 
   def initialize(params)
+    @building = params[:building]
     @position = params[:position] # int position from 1 to n
     @waiting_line = params[:waiting_line] || { up: [], down: [] } # hash of people waiting for an elevator, keys are
     # up/down and values are arrays of Persons
-    @building = params[:building]
     @inhabitants = Array.new
     calc_waiting_count
 
@@ -85,9 +85,11 @@ class Floor
 
   private
 
+  # Calculate how many people are waiting for an elevator on this floor
   def calc_waiting_count
     @waiting_count = 0
     waiting_line.values.each { |array| array.each { @waiting_count += 1 } }
+    building.log_pickup_request(position) if waiting_count > 0
   end
 
 end

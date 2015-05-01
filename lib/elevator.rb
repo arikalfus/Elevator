@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 class Elevator
 
   ELEV_MAX_PERSONS = 20
@@ -139,7 +141,6 @@ class Elevator
 
   # Method should only be called if elevator is at ELEV_RESTING_FLOOR
   def begin_moving
-    raise Error, '#begin_moving was called somewhere other than ELEV_RESTING_FLOOR' unless current_floor == ELEV_RESTING_FLOOR
     @moving_direction = :up
     move
   end
