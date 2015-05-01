@@ -3,8 +3,6 @@ require_relative 'elevator'
 require_relative 'floor'
 require_relative 'person'
 
-require 'pry-byebug'
-
 class Simulate
 
   attr_reader :clock_time, :max_turns
@@ -20,6 +18,7 @@ class Simulate
   # Run a simulation for max_turns turns
   def run
     construct_object_params
+    print_start
     (0...max_turns).each { clock_tick }
   end
 
@@ -46,7 +45,7 @@ class Simulate
           print '[ ]'
         end
       end
-      print '|'
+      print '|  '
       print "[#{@building.floors[i].waiting_count}]"
       print "[#{@building.floors[i].inhabitant_count}]"
       puts "\n"
@@ -129,6 +128,10 @@ class Simulate
       persons.push person
     end
     persons
+  end
+
+  def print_start
+    to_s
   end
 
 end

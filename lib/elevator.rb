@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Elevator
 
   ELEV_MAX_PERSONS = 20
@@ -74,9 +72,9 @@ class Elevator
   def exit_elevator
     persons_exiting = passengers[current_floor]
     @passenger_count -= persons_exiting.count
-    @passengers[current_floor].clear
     # Add exiting passengers to current floor
     building.floor(current_floor).arrive persons_exiting
+    @passengers[current_floor].clear
   end
 
   # Passengers are inserted into passengers array ordered by what floor they want to get off at
