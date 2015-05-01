@@ -158,6 +158,7 @@ class Simulate
     person = Person.new(desired_floor: rand_floor)
     rand_start_floor = rand(@building.number_of_floors) + 1
 
+
     @building.floors[rand_start_floor].add_person person
   end
 
